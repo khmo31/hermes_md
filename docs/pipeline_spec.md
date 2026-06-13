@@ -173,3 +173,33 @@ Phase 3: Reconciliation + Metrics + Git
 | Orchestrator | `deepseek-v4-pro` | 분할 판단, 컨텍스트 구성, 루프 제어는 고품질 추론 필요. | ~$0.005 |
 
 > **가설 상태. metrics.jsonl 데이터 50건 이상 쌓이면 pass rate / avg loops / cost로 검증 예정.**
+
+---
+
+## 7. Meta-Optimizer Profile 격리 검증
+
+### 설계
+
+Meta-Optimizer는 `hermes --profile meta-optimizer`로 실행되며, 루트 `~/.hermes/SOUL.md`/`AGENTS.md` 대신 `~/.hermes/profiles/meta-optimizer/`의 파일만 로드한다.
+
+### 검증 절차
+
+```bash
+# 1. profile context dump
+hermes --profile meta-optimizer --print-context > /tmp/meta_context.txt
+
+# 2. 루트 SOUL/AGENTS 미포함 확인
+grep -c "Hermes Agent — 핵심 정체성" /tmp/meta_context.txt
+# 기대값: 0 (루트 SOUL.md의 정체성 문구가 없어야 함)
+
+grep -c "Meta-Optimizer" /tmp/meta_context.txt
+# 기대값: ≥ 1 (profile SOUL.md의 정체성만 있어야 함)
+
+# 3. instruction merge 정책 확인
+# Profile이 명시적으로 root의 instruction을 상속하지 않도록 config.yaml에 설정
+# merge_strategy: replace (기본값)
+```
+
+### Cron 실행 시 격리
+
+cron job `meta-optimizer-weekly`는 `profile="meta-optimizer"`로 등록되어 있어, cron 스케줄러가 자동으로 해당 profile의 SOUL/AGENTS/config를 로드한다. 루트 설정과의 혼합은 발생하지 않는다.

@@ -95,3 +95,6 @@ Meta-Optimizer는 절대 승인 게이트를 건너뛰지 않는다. `clarify` �
 3. **Cronjob self-update 금지**: `cronjob update` 호출 시 대상 `job_id`가 자신의 `job_id`(`meta-optimizer-weekly`)와 일치하면 NEVER 허용, 즉시 abort.
 
 4. **데이터 최소 기준**: metrics.jsonl 라인 수 < 30이면 분석 건너뛰고 "데이터 부족" 보고.
+   - 근거: 중심극한정리(Central Limit Theorem) — n ≥ 30에서 표본평균의 정규근사가 유효.
+   - 도메인별 분석은 도메인당 n ≥ 10일 때만 수행.
+   - MVP 초기(30건 미만)에는 개선안 대신 단순 추세 관찰만 수행.
