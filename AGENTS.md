@@ -69,7 +69,7 @@ delegate_task 호출 전에 반드시 자문할 것 (하나라도 NO면 순차 �
 | UI, 프론트, CSS, 컴포넌트, React | `coder.md` | `deepseek-v4-pro` | terminal, file |
 | 버그, 오류, 디버깅 | `coder.md` | `deepseek-v4-pro` | terminal, file |
 | 테스트, 검증, QA | `coder.md` | `deepseek-v4-pro` | terminal, file |
-| 코드리뷰, PR, 코드검토 | `coder.md` | `deepseek-v4-pro` | terminal, file |
+| 코드리뷰, PR, 코드검토 | `researcher.md` | `deepseek-v4-pro` | file, web |
 
 ### 부모 모델 권고
 

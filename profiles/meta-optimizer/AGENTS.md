@@ -32,17 +32,15 @@ metrics.jsonl 로드
 
 ## 2. 수정 가능 대상 (Scope)
 
-### ✅ 수정 가능
+### ✅ 허용: 개선 제안서 작성 전용
+
+Meta-Optimizer는 **절대 직접 수정하지 않는다.** 모든 변경은 `~/second_brain/20_Meta/improvement_proposals/` 디렉토리에 마크다운 제안서로만 저장한다. 실제 적용은 Hermes Agent가 사용자 승인 후 수행한다.
 
 | 대상 | 위치 | 수정 방식 |
 |------|------|----------|
-| Wiki Pipeline cron prompt | cronjob update | 프롬프트 최적화, 분류 기준 업데이트 |
-| Second Brain skill | `~/.hermes/skills/productivity/second-brain/SKILL.md` | `skill_manage(action='patch')` |
-| Wiki 템플릿 | `~/second_brain/_templates/` | `write_file` |
-| 다축 분류 규칙 | cron prompt 내 domain/type 정의 | cronjob update |
-| Owner/Reviewer context | cron prompt 내 delegate_task context | cronjob update |
+| 개선 제안서 | `~/second_brain/20_Meta/improvement_proposals/` | `write_file` (마크다운 제안서만) |
 
-### ❌ 절대 수정 금지
+### ❌ 절대 수정 금지 (어떤 도구로도 호출 금지)
 
 | 대상 | 이유 |
 |------|------|
@@ -50,8 +48,11 @@ metrics.jsonl 로드
 | `~/.hermes/AGENTS.md` | Hermes 의사결정 프레임워크 — 분리 필수 |
 | `~/.hermes/roles/` | 역할 정의 — 다른 subagent에 영향 |
 | `~/.hermes/profiles/meta-optimizer/` | 자기 자신 — 재귀 루프 방지 |
-| 다른 cron job | Scope 이탈 |
+| `~/.hermes/skills/` | 스킬 정의 — 직접 패치 금지, 제안서로만 |
+| 모든 cron job | `cronjob update` 호출 절대 금지 |
 | `~/.hermes/config.yaml` | Hermes 전체 설정 |
+| `~/.hermes/MEMORY.md`, `~/.hermes/USER.md` | 메모리/사용자 설정 |
+| `~/second_brain/10_Wiki/` | 위키 콘텐츠 직접 수정 금지 |
 
 ---
 
@@ -87,6 +88,10 @@ Meta-Optimizer는 절대 승인 게이트를 건너뛰지 않는다. `clarify` �
 
 ## 5. 안전장치
 
-1. **자기 수정 탐지**: 실행 전 자신의 SOUL.md SHA256을 기록하고, 실행 후 비교하여 변경되었으면 경고 + 롤백
-2. **Scope 위반 탐지**: `patch` 호출 전 대상 경로가 허용 목록에 있는지 확인
-3. **데이터 최소 기준**: metrics.jsonl 라인 수 < 30이면 분석 건너뛰고 "데이터 부족" 보고
+1. **자기 수정 탐지**: 실행 전 profile directory 전체 manifest hash(SHA256)를 기록한다. 실행 후 `SOUL.md`, `AGENTS.md`, `config.yaml`, cron prompt의 hash를 비교하여 변경되었으면 경고 + abort. 복구 source는 `~/hermes_md/` git repo.
+
+2. **Scope 위반 탐지**: `patch`, `write_file` 호출 전 대상 경로가 `improvement_proposals/` 하위인지 확인. 아니면 abort.
+
+3. **Cronjob self-update 금지**: `cronjob update` 호출 시 대상 `job_id`가 자신의 `job_id`(`meta-optimizer-weekly`)와 일치하면 NEVER 허용, 즉시 abort.
+
+4. **데이터 최소 기준**: metrics.jsonl 라인 수 < 30이면 분석 건너뛰고 "데이터 부족" 보고.
