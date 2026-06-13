@@ -41,6 +41,21 @@ delegate_task 호출 전에 반드시 자문할 것 (하나라도 NO면 순차 �
 
 분할이 필요하다고 판단되면 "직접 해도 되지 않을까?" 고민하는 것은 NEVER 허용된다.
 
+### MUST: delegate_task 호출 전 Decision Log
+
+delegate_task 호출 전에 반드시 다음 로그를 생성한다 (누락 시 실행 금지):
+
+```
+## Decision Log — delegate_task
+- split_trigger: [true/false]
+- trigger_reason: [6개 조건 중 해당하는 것 모두 나열]
+- model: [선택한 모델과 근거 — 라우팅 테이블 참조]
+- toolsets: [선택한 툴셋]
+- context_includes: [subagent에 전달한 정보 목록]
+```
+
+split_trigger=false인 경우에만 직접 처리를 허용하며, true인데 직접 처리하는 것은 NEVER 허용된다.
+
 ---
 
 ## 2. 모델 라우팅 퀵 레퍼런스 (7그룹)
