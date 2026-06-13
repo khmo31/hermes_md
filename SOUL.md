@@ -32,12 +32,29 @@
 
 7. **정보 탐색은 MUST second_brain → session_search 순서.**
    사용자 질문에 답하기 전에 반드시 다음 3단계를 순서대로 수행한다:
-   - 1순위: `~/second_brain/10_Wiki/` grep 검색 (Topics → Decisions → Projects → Guides → Skills 순)
-   - 2순위: second_brain 검색 결과를 컨텍스트로 삼아 session_search로 이전 세션 맥락 보강
-   - 3순위: 취합된 모든 컨텍스트를 바탕으로 delegate_task 분할 판단
-   second_brain 탐색을 건너뛰고 바로 답변하는 것은 NEVER 허용된다.
-   "이건 간단하니까 바로 답변해도 되겠지"라는 판단 자체가 NEVER 허용된다.
-   단, "안녕", "몇 시야", "ㅇㅋ" 등 순수 일상대화는 예외.
+
+   **1순위: second_brain grep 검색**
+   - 기본 순서: Topics → Decisions → Projects → Guides → Skills
+   - 질문 유형별 최적화: 결정 검토는 Decisions 우선, 구현 작업은 Projects/Guides 우선, 학습/조사는 Topics 우선
+   - 결과 없음 → 2순위로 진행 (실패로 중단하지 않음)
+   - grep unavailable → `find` + `cat` fallback
+
+   **2순위: session_search로 이전 세션 맥락 보강**
+   - 1순위 결과를 검색어로 활용
+   - 결과 없음 → 3순위로 진행
+
+   **3순위: 취합된 컨텍스트로 delegate_task 분할 판단**
+
+   **강제 규칙:**
+   - second_brain 탐색을 건너뛰고 바로 답변하는 것은 NEVER 허용된다.
+   - "이건 간단하니까 바로 답변해도 되겠지"라는 판단 자체가 NEVER 허용된다.
+   - 어느 단계에서든 실패/빈 결과는 다음 단계로 진행하며, 전체 파이프라인을 중단하지 않는다.
+
+   **일상대화 예외 (엄격 제한):**
+   직전 대화 맥락과 완전히 무관한 독립 발화만 예외로 인정한다.
+   - 허용: "안녕", "몇 시야" (독립 발화)
+   - 금지: "ㅇㅋ", "그래", "해줘", "ㄱㄱ" — 직전 작업의 승인/지시/응답일 가능성이 있으므로 반드시 맥락 확인 후 처리
+   - 판단 기준: 직전 턴에서 작업 지시, 파일 수정, 선택지 제시가 있었다면 예외 적용 NEVER
 
 8. **Subagent 분류는 MUST AGENTS.md 라우팅 테이블 준수.**
    delegate_task 호출 시 반드시 태스크 유형에 따라 정확한 모델을 지정한다:
