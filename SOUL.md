@@ -59,7 +59,7 @@
 8. **Subagent 분류는 MUST AGENTS.md 라우팅 테이블 준수.**
    delegate_task 호출 시 반드시 태스크 유형에 따라 정확한 모델을 지정한다:
    - 분석/리서치/코드리뷰 → `deepseek-v4-pro`
-   - 코드작성/디버깅/테스트 → `deepseek-v4-pro`
+   - 코드작성/디버깅/테스트 → `kimi-k2.7-code`
    - 문서/번역/글쓰기 → `qwen3.7-max`
    - 자동화/모니터링 → `deepseek-v4-flash`
    - 단순 작업/실험 → `deepseek-v4-flash`

@@ -63,7 +63,7 @@ split_trigger=false인 경우에만 직접 처리를 허용하며, true인데 �
 | 그룹 | 태스크 | 1순위 | 2순위 | 툴셋 |
 |------|--------|-------|-------|------|
 | 🔍 Research & Analysis | 리서치, 코드분석, 코드리뷰, 기획, 취약점분석 | `deepseek-v4-pro` | `kimi-k2.6` | file, web |
-| ⚡ Development | 코드작성, 디버깅, 백엔드, 프론트, 테스트 | `deepseek-v4-pro` | `deepseek-v4-flash` | terminal, file |
+| ⚡ Development | 코드작성, 디버깅, 백엔드, 프론트, 테스트 | `kimi-k2.7-code` | `deepseek-v4-pro` | terminal, file |
 | 📝 Writing & Docs | 문서, README, 번역, 한국어글쓰기, AI어투제거 | `qwen3.7-max` | `qwen3.7-plus` | file |
 | 🎨 Creative | 스토리, 카피, 블로그, 광고 | `minimax-m3` | `qwen3.7-max` | file |
 | 📄 Long Docs | 대용량문서(200K+), PDF분석 | `kimi-k2.6` | `kimi-k2.5` | file |
@@ -80,10 +80,10 @@ split_trigger=false인 경우에만 직접 처리를 허용하며, true인데 �
 | 분석, 조사, 리서치, 비교, 트렌드 | `researcher.md` | `deepseek-v4-pro` | web, file |
 | 기획, 설계, 아키텍처, 요구사항 | `researcher.md` | `deepseek-v4-pro` | file |
 | 대용량 문서 처리 (200K+) | `researcher.md` | `kimi-k2.6` | file |
-| 로그인, CRUD, API, DB, 백엔드, 서버 | `coder.md` | `deepseek-v4-pro` | terminal, file |
-| UI, 프론트, CSS, 컴포넌트, React | `coder.md` | `deepseek-v4-pro` | terminal, file |
-| 버그, 오류, 디버깅 | `coder.md` | `deepseek-v4-pro` | terminal, file |
-| 테스트, 검증, QA | `coder.md` | `deepseek-v4-pro` | terminal, file |
+| 로그인, CRUD, API, DB, 백엔드, 서버 | `coder.md` | `kimi-k2.7-code` | terminal, file |
+| UI, 프론트, CSS, 컴포넌트, React | `coder.md` | `kimi-k2.7-code` | terminal, file |
+| 버그, 오류, 디버깅 | `coder.md` | `kimi-k2.7-code` | terminal, file |
+| 테스트, 검증, QA | `coder.md` | `kimi-k2.7-code` | terminal, file |
 | 코드리뷰, PR, 코드검토 | `researcher.md` | `deepseek-v4-pro` | file, web |
 
 ### 부모 모델 권고
