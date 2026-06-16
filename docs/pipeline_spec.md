@@ -180,15 +180,12 @@ Cron 2: Pipeline B + Phase 3 (21:20 UTC, 예상 35분)
 
 | 역할 | 모델 | 선택 이유 | 예상 비용/세션 |
 |------|------|----------|--------------|
-| Owner | `deepseek-v4-pro` | 초안 품질이 Reviewer의 교정 부담과 루프 횟수를 결정. flash의 분류 오류(domain 오분류, invalid frontmatter, table 합계 불일치)로 인한 재작업 비용이 flash의 단가 이점을 상쇄함. | ~$0.01 |
+| Owner | `deepseek-v4-flash` | 초안 생성은 빠른 처리량이 우선. 정확도보다 속도. SKILL.md의 pitfall들(domain 오분류, frontmatter 오류, table 합계 불일치)은 모델 교체가 아닌 Owner prompt 개선과 context 품질 향상으로 대응한다. | ~$0.002 |
 | Reviewer | `deepseek-v4-pro` | 팩트 체크 + 중복 검증은 정확도가 필수. | ~$0.01 |
 | Orchestrator | `deepseek-v4-pro` | 분할 판단, 컨텍스트 구성, 루프 제어는 고품질 추론 필요. | ~$0.005 |
 
-> **Owner 모델 downgrade 조건:** 다음 조건이 모두 충족되면 `deepseek-v4-flash`로 재전환 검토.
-> 1. metrics.jsonl 50건 이상 누적
-> 2. pro Owner 기준 avg_loops ≤ 1.2
-> 3. Reviewer PASS rate (1차 통과율) ≥ 80%
-> 위 조건 충족 시 flash로 A/B 테스트 (25건씩) → 통계적 유의미성 확보 후 전환.
+> **가설 상태. metrics.jsonl 데이터 50건 이상 쌓이면 pass rate / avg loops / cost로 검증 예정.**
+> Owner 모델 upgrade 검토 조건: (1) avg_loops > 2.0, (2) Reviewer FAIL 비율 중 "Owner 오류" > 30%, (3) 재작업 비용 > pro 전환 비용 차이. 세 조건 동시 충족 시에만 pro 검토.
 
 ---
 

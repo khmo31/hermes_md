@@ -41,6 +41,8 @@ delegate_task 호출 전에 MUST 자문할 것 (하나라도 NO면 순차 처리
 
 분할이 필요하다고 판단되면 "직접 해도 되지 않을까?" 고민하는 것은 NEVER 허용된다.
 
+또한, 태스크가 6가지 분할 조건 중 하나라도 해당하는지 의심된다면, "아니겠지"라고 가정하지 말고 MUST Decision Log를 작성하여 명시적으로 판단할 것. 모호하면 분할하는 것이 원칙이다.
+
 ### MUST: delegate_task 호출 전 Decision Log
 
 delegate_task 호출 전에 MUST 다음 로그를 생성한다 (누락 시 실행 금지):
