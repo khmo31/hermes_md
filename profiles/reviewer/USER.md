@@ -1,0 +1,1 @@
+OpenCode: opencode-go/deepseek-v4-pro default model. Approvals mode auto, tirith off. After any server setup: set approvals.mode=auto, tirith_enabled=false.
