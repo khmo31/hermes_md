@@ -31,7 +31,7 @@
 
 ### 분할 전 MUST 검증 3가지 질문
 
-delegate_task 호출 전에 반드시 자문할 것 (하나라도 NO면 순차 처리):
+delegate_task 호출 전에 MUST 자문할 것 (하나라도 NO면 순차 처리):
 
 1. **서브태스크들이 정말 독립적인가?** — A의 결과 없이 B를 시작해도 되는가?
 2. **각 subagent가 충분한 컨텍스트를 갖는가?** — context 필드에 모든 필요 정보가 들어있는가?
@@ -43,7 +43,7 @@ delegate_task 호출 전에 반드시 자문할 것 (하나라도 NO면 순차 �
 
 ### MUST: delegate_task 호출 전 Decision Log
 
-delegate_task 호출 전에 반드시 다음 로그를 생성한다 (누락 시 실행 금지):
+delegate_task 호출 전에 MUST 다음 로그를 생성한다 (누락 시 실행 금지):
 
 ```
 ## Decision Log — delegate_task
@@ -109,7 +109,7 @@ split_trigger=false인 경우에만 직접 처리를 허용하며, true인데 �
 
 ## 4. 검증 루프 (Verification Protocol)
 
-delegate_task 결과는 subagent의 **자기보고**이므로 반드시 검증한다.
+delegate_task 결과는 subagent의 **자기보고**이므로 MUST 검증한다.
 
 ### 파일 생성/수정 검증
 ```
@@ -155,7 +155,7 @@ context에 필요한 모든 정보를 명시적으로 포함시킬 것. "알잖�
 delegate_task는 동기적이다. 부모 턴이 끝나기 전에 모든 subagent가 완료되어야 한다. 10분 이상 작업은 `terminal(background=True, notify_on_complete=True)`로 위임.
 
 ### 한계 2: Subagent 간 통신 불가
-병렬 배치로 보낸 subagent들은 서로의 진행 상황을 알 수 없다. 정보는 반드시 부모를 통해서만 흐른다.
+병렬 배치로 보낸 subagent들은 서로의 진행 상황을 알 수 없다. 정보는 MUST 부모를 통해서만 흐른다.
 
 ### 한계 3: 컨텍스트 평탄화 손실
 context 필드는 문자열. JSON/코드는 파일로 저장 후 경로 전달할 것. "분석 결과는 /tmp/analysis.json 참고" 형식.
@@ -187,15 +187,20 @@ delegate_task(tasks=[
 ```
 
 ### Model Resolution 우선순위
+
+⚠️ **SOUL.md 규칙 #8에 따라 model 파라미터 생략은 NEVER 허용된다.** 아래 폴백 체인은 기술적 동작을 설명할 뿐, 이를 의도적으로 활용하는 것은 금지된다.
+
 ```
-tasks[i].model (per-task)
+tasks[i].model (per-task)          ← MUST 명시 (batch 모드에서도 각 태스크별 model 필수)
      ↓  overrides
-delegate_task(model=...) (top-level)
-     ↓  overrides
+delegate_task(model=...) (top-level) ← MUST 명시 (단일 태스크 시)
+     ↓  overrides (비권장: 명시적 model이 없는 경우에만, NEVER 의도적 생략)
 config.yaml delegation.model
-     ↓  fallback
+     ↓  fallback (비권장)
 parent session model
 ```
+
+**Batch 모드 강제**: `delegate_task(tasks=[...])` 사용 시 각 task 객체에 `model` 필드를 MUST 포함한다. per-task model이 없는 task는 NEVER 허용되지 않으며, batch 호출 자체가 거부되어야 한다.
 
 ### Provider 제한
 `model` 파라미터는 override 가능하지만 provider는 `config.yaml delegation.provider`(opencode-go)로 고정된다. provider 변경이 필요하면 config.yaml 수정 필요.

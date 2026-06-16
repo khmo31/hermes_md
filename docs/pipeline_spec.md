@@ -155,10 +155,22 @@ Phase 3: Reconciliation + Metrics + Git
 
 ### Timeout Budget
 
-- Phase 1: 최대 5분
-- Phase 2: 세션당 최대 3분 × 최대 10세션 = 30분
-- Phase 3: 최대 5분
-- 총 예상: ~40분 (21:00-21:40 UTC)
+Pipeline A와 Pipeline B는 **별도 cron으로 분리**한다. 단일 cron 통합은 context overflow로 Phase 2가 silent-skip 되는 문제가 확인되었다.
+
+```
+Cron 1: Pipeline A + Phase 3 (21:00 UTC, 예상 10분)
+  Phase 1 (Pipeline A): Raw Data 처리
+    → 실패 시: Phase 3으로 진행 (독립적)
+  Phase 3: Reconciliation + Metrics + Git
+
+Cron 2: Pipeline B + Phase 3 (21:20 UTC, 예상 35분)
+  Phase 2 (Pipeline B): Session Distillation
+    → 실패 시: Phase 3으로 진행
+  Phase 3: Reconciliation + Metrics + Git
+```
+
+- Cron 2는 `scripts/session_distill_prep.py`의 출력이 `{"status": "no_new_sessions"}`이면 Phase 3만 실행 후 조기 종료
+- Phase 3은 양 cron에서 모두 실행하여 state file 정합성을 유지 (idempotent)
 
 초과 시 처리된 것까지만 커밋하고 다음 실행에 나머지 위임.
 
@@ -168,11 +180,15 @@ Phase 3: Reconciliation + Metrics + Git
 
 | 역할 | 모델 | 선택 이유 | 예상 비용/세션 |
 |------|------|----------|--------------|
-| Owner | `deepseek-v4-flash` | 초안 생성은 빠른 처리량이 우선. 정확도보다 속도. | ~$0.002 |
+| Owner | `deepseek-v4-pro` | 초안 품질이 Reviewer의 교정 부담과 루프 횟수를 결정. flash의 분류 오류(domain 오분류, invalid frontmatter, table 합계 불일치)로 인한 재작업 비용이 flash의 단가 이점을 상쇄함. | ~$0.01 |
 | Reviewer | `deepseek-v4-pro` | 팩트 체크 + 중복 검증은 정확도가 필수. | ~$0.01 |
 | Orchestrator | `deepseek-v4-pro` | 분할 판단, 컨텍스트 구성, 루프 제어는 고품질 추론 필요. | ~$0.005 |
 
-> **가설 상태. metrics.jsonl 데이터 50건 이상 쌓이면 pass rate / avg loops / cost로 검증 예정.**
+> **Owner 모델 downgrade 조건:** 다음 조건이 모두 충족되면 `deepseek-v4-flash`로 재전환 검토.
+> 1. metrics.jsonl 50건 이상 누적
+> 2. pro Owner 기준 avg_loops ≤ 1.2
+> 3. Reviewer PASS rate (1차 통과율) ≥ 80%
+> 위 조건 충족 시 flash로 A/B 테스트 (25건씩) → 통계적 유의미성 확보 후 전환.
 
 ---
 
@@ -203,3 +219,57 @@ grep -c "Meta-Optimizer" /tmp/meta_context.txt
 ### Cron 실행 시 격리
 
 cron job `meta-optimizer-weekly`는 `profile="meta-optimizer"`로 등록되어 있어, cron 스케줄러가 자동으로 해당 profile의 SOUL/AGENTS/config를 로드한다. 루트 설정과의 혼합은 발생하지 않는다.
+
+---
+
+## 8. Phase 4: Legacy Folder Migration (1회성)
+
+기존 folder-based Wiki 파일(105개)을 flat + multi-axis frontmatter로 변환하는 일회성 작업.
+
+### 변환 대상
+- `10_Wiki/{Decisions,Topics,Projects,Guides,Skills,Meetings,Postmortems,RFCs,Releases}/` 아래 모든 `.md`
+
+### 폴더 → type 매핑
+| Legacy Folder | `type` 값 |
+|---------------|----------|
+| `Decisions/` | `decision` |
+| `Topics/` | `topic` |
+| `Projects/` | `project` |
+| `Guides/` | `guide` |
+| `Skills/` | `skill` |
+| `Meetings/` | `meeting` |
+| `Postmortems/` | `postmortem` |
+| `RFCs/` | `rfc` |
+| `Releases/` | `release` |
+
+### 변환 로직 (`scripts/migrate_legacy_to_flat.py`)
+- `domain`: 파일명/내용 키워드 기반 휴리스틱 분류 + `general` fallback
+- `status`: mtime > 90일 → `deprecated`, 그 외 → `stable` (수동 검토 대상 마킹)
+- `source`: `legacy-migration`
+- `date`: 파일의 git 최초 커밋일
+- 출력: flat `10_Wiki/<원본파일명>.md` + frontmatter 삽입
+- 원본 legacy 폴더는 `.legacy_backup/`로 이동 (삭제 아님)
+
+### 실행 절차
+```bash
+# Step 1: Dry-run — 변환 대상 확인 (파일 이동 없음)
+python3 scripts/migrate_legacy_to_flat.py --dry-run
+
+# Step 2: 실제 변환 실행
+python3 scripts/migrate_legacy_to_flat.py --execute
+
+# Step 3: 검증 — grep으로 모든 파일에 frontmatter 존재 확인
+missing=$(find ~/second_brain/10_Wiki/ -name '*.md' -type f \
+  -not -path '*/README.md' \
+  -exec sh -c 'head -1 "$1" | grep -q "^---$" || echo "$1"' _ {} \;)
+if [ -n "$missing" ]; then
+  echo "ERROR: Missing frontmatter in: $missing"
+  exit 1
+fi
+```
+
+### Post-Migration
+- frontmatter 누락 파일 0건 확인
+- `wiki_state.json`의 모든 legacy 경로를 새 flat 경로로 업데이트
+- git commit + push
+- legacy 폴더 구조를 `.legacy_backup/`에서 30일 후 삭제

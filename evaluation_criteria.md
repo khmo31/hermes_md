@@ -56,7 +56,7 @@
 | # | 항목 | 확인 포인트 |
 |---|------|------------|
 | 5.1 | frontmatter 기반 분류(type/domain/status/source/tags)가 폴더 기반 분류보다 검색 효율이 높은가 | grep/find 관점에서 비교 |
-| 5.2 | domain 7종(trading/ai-ml/devops/smarthome/hermes/toeic/general)이 상호배타적인가 | 경계선 케이스 처리 |
+| 5.2 | domain 9종(trading/ai-ml/devops/smarthome/toeic/hermes/discord/notion/general)이 상호배타적인가 | 경계선 케이스 처리 |
 | 5.3 | status 3단계(draft/stable/deprecated)가 실제 라이프사이클과 일치하는가 | "deprecated" 판단 기준이 명확한가 |
 | 5.4 | 기존 105개 Wiki 파일의 마이그레이션 경로가 존재하는가 | 수동/자동 전환 계획 |
 

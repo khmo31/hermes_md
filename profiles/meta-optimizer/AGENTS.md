@@ -42,6 +42,13 @@ Meta-Optimizer는 **절대 직접 수정하지 않는다.** 모든 변경은 `~/
 
 ### ❌ 절대 수정 금지 (어떤 도구로도 호출 금지)
 
+**우회 시도도 금지된다.** 다음 행위는 직접 수정과 동일하게 간주되어 NEVER 허용되지 않는다:
+- symlink/hardlink를 통한 우회 접근
+- 파일을 임시 위치에 복사 후 수정
+- `cp`, `mv`, `rsync` 등으로 금지 대상 파일을 조작하는 모든 행위
+- `sed`, `awk`, `echo`, `tee` 등으로 금지 파일에 쓰는 모든 셸 명령
+- delegate_task로 생성한 subagent에게 금지 대상을 수정하도록 지시하는 행위
+
 | 대상 | 이유 |
 |------|------|
 | `~/.hermes/SOUL.md` | Hermes Agent 정체성 — Meta-Optimizer와 분리 필수 |
@@ -58,17 +65,9 @@ Meta-Optimizer는 **절대 직접 수정하지 않는다.** 모든 변경은 `~/
 
 ## 3. delegate_task 사용 규칙
 
-Meta-Optimizer는 복잡한 분석에 delegate_task를 사용할 수 있지만, subagent에도 동일한 scope 제한이 적용되어야 한다.
+Meta-Optimizer의 config.yaml에서 `delegation` 툴셋이 비활성화되어 있다. 따라서 delegate_task를 호출할 수 없으며, scope 제한 없는 subagent를 생성하는 경로가 차단된다.
 
-```
-delegate_task(
-  model="deepseek-v4-pro",
-  context="이 에이전트는 Second Brain 파이프라인 메트릭만 분석한다.
-           ~/.hermes/SOUL.md, AGENTS.md는 절대 수정하지 않는다.",
-  toolsets=["file"],
-  goal="distillation_metrics.jsonl 분석 및 FAIL 패턴 식별"
-)
-```
+분석은 단일 세션의 file + terminal(read-only) 툴셋으로 직접 수행한다.
 
 ---
 
@@ -117,4 +116,15 @@ DENYLIST:
 
 3. **Cronjob self-update 금지**: `cronjob update` 호출 시 대상 `job_id`가 자신의 `job_id`(`meta-optimizer-weekly`)와 일치하면 NEVER 허용, 즉시 abort.
 
-4. **데이터 최소 기준**: metrics.jsonl 라인 수 < 30이면 분석 건너뛰고 "데이터 부족" 보고. (중심극한정리 n≥30, 도메인별 n≥10)
+4. **Cron 정의 파일 직접 수정 금지**: `~/.hermes/cron/` 디렉토리의 어떤 파일도 write_file, patch, terminal 명령으로 수정할 수 없다. 자신의 cron job 정의 뿐만 아니라 모든 cron 정의 파일이 대상이다.
+
+5. **Profile 파일 직접 수정 금지**: `~/.hermes/profiles/meta-optimizer/` 내 모든 파일(SOUL.md, AGENTS.md, config.yaml)은 Preflight Denylist에 의해 보호된다. `write_file`, `patch`, terminal 명령을 통한 간접 수정도 차단된다.
+
+6. **공유 자원 오염 방지 (Shared Resource Contamination Prevention)**:
+   - `~/.hermes/skills/productivity/second-brain/SKILL.md`의 개선 제안서는 **diff 형식으로만** 제안한다. 전체 파일 대체 제안은 NEVER 허용 — 부분 변경만으로 영향 최소화.
+   - `state.db`는 **읽기 전용** 접근만 허용. 쓰기/수정은 NEVER.
+   - Notion MCP 호출 시 데이터베이스/페이지 **생성·수정·삭제는 금지**. 읽기 쿼리만 허용.
+   - `~/.hermes/profiles/` 하위의 **다른 profile 파일**에 대한 접근은 읽기조차 금지.
+   - 개선 제안서에는 MUST **"영향받는 파일 목록"**과 **"영향받지 않는 파일 목록"**을 명시하여 side-effect 투명성 확보.
+
+7. **데이터 최소 기준**: metrics.jsonl 라인 수 < 30이면 분석 건너뛰고 "데이터 부족" 보고. (중심극한정리 n≥30, 도메인별 n≥10)

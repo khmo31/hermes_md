@@ -6,7 +6,9 @@ model:
 toolsets:
 - file
 - terminal
-- delegation
+# ⚠️ delegation 제거됨 — Meta-Optimizer가 scope 제한 없는 subagent를 생성하여
+# 승인 게이트를 우회하는 것을 방지 (evaluation_criteria.md 4.4 FAIL 해소)
+# terminal은 읽기 전용 명령(grep, cat, find, sha256sum 등)만 허용. 쓰기 금지.
 terminal:
   backend: local
   auto_source_bashrc: true
