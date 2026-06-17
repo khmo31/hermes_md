@@ -81,7 +81,7 @@
 | 7.1 | Meta-Optimizer가 자신의 프롬프트를 수정하는 경로가 완전히 차단되었는가 | cronjob update API가 자신의 job_id를 대상으로 호출 가능한가 |
 | 7.2 | metrics.jsonl의 "데이터 30건 미만 분석 건너뜀" 규칙이 초기 과최적화를 방지하는가 | 수치 30의 근거 |
 | 7.3 | Meta-Optimizer ↔ Hermes Agent 간 SOUL.md/AGENTS.md 공유로 인한 오염 가능성이 0인가 | profile 메커니즘이 완전한 격리를 제공하는가 |
-| 7.4 | "실행 전/후 SHA256 비교" 안전장치가 실제 구현 가능한가 | cron 환경에서 파일 해시 비교가 신뢰성 있게 동작하는가 |
+| 7.4 | "실행 전/후 SHA256 비교" 안전장치가 실제 구현 가능한가 | cron 환경에서 파일 해시 비교가 신뢰성 있게 동작하는가 | **IN PROGRESS** — `scripts/verify_integrity.sh` 스텁 존재, 실제 구현은 TODO. 스텁만으로 PASS 불가. |
 
 ---
 
