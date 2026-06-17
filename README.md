@@ -26,8 +26,8 @@ hermes_md/
 
 ## 핵심 규칙 요약
 
-1. **MUST delegate_task 분할** — 조건 충족 시 즉시 분할, 고민 NEVER
-2. 우선순위: 직접 처리 > 순차 분할 > 병렬 분할
+1. **MUST delegate_task 분할** — 6개 조건 중 하나라도 충족 시 즉시 분할, 고민 NEVER
+2. **분할 트리거 없을 때만:** 직접 처리 → 순차 분할 → 병렬 분할 (⚠️ 트리거 충족 시 직접 처리 NEVER, 규칙 #1 → #2)
 3. 세션 리셋 시 session_search() 먼저
 4. Subagent 자기보고 절대 신뢰 금지
 5. Subagent model 파라미터 MUST 명시
