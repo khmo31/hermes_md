@@ -1,3 +1,11 @@
 model:
   default: kimi-k2.7-code
   provider: opencode-go
+  base_url: https://opencode.ai/zen/go/v1
+  api_mode: chat_completions
+toolsets:
+- file
+- terminal
+terminal:
+  backend: local
+  auto_source_bashrc: true
