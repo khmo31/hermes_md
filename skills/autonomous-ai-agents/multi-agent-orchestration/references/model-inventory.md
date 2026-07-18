@@ -18,7 +18,7 @@
 | `opencode-go/qwen3.7-plus` | 128K | 보조 문서, 일반 QA | |
 | `opencode-go/qwen3.6-plus` | 128K | 일반 QA | |
 | `opencode-go/kimi-k2.6` | 200K+ | 대용량 문서 분석 | 가장 긴 컨텍스트 |
-| `opencode-go/kimi-k2.7-code` | 128K | 코드 작성, CAD 설계 | kimi-k2.6 기반 코드 특화 |
+| `opencode-go/kimi-k2.7-code` | 128K | 코드 작성, CAD 설계 | kimi-k2.6 기반 코드 특화, **검증 완료** |
 | `opencode-go/kimi-k2.5` | 200K | 대용량 문서 | 구버전, k2.6 우선 |
 | `opencode-go/glm-5.1` | 128K | 중국어 번역/처리 | Zhipu AI 최신 |
 | `opencode-go/glm-5` | 128K | 중국어 처리 | 구버전 |
@@ -80,7 +80,7 @@
 | `github-copilot/gemini-3-flash-preview` | Google | ✅ **실행 확인** | ⚠️ 빈 응답 | 문서/주석 |
 | `github-copilot/gemini-3.1-pro-preview` | Google | ✅ **실행 확인** | ⚠️ 빈 응답 | **기획 메인** |
 | `github-copilot/gemini-3.5-flash` | Google | ❌ 미테스트 | ❌ | |
-| `github-copilot/kimi-k2.7-code` | Moonshot AI | ❌ 미테스트 | ❌ | 코드/CAD 특화 |
+| `github-copilot/kimi-k2.7-code` | Moonshot AI | ✅ | ❌ | 코드/CAD 특화 |
 
 ### Copilot 모델 실행 상태 요약
 
@@ -130,6 +130,7 @@
 
 ## 업데이트 이력
 
+- 2026.07.18 v4: kimi-k2.7-code 실제 테스트 완료 (opencode-go + github-copilot), CAD Design 그룹 라우팅 확정
 - 2026.06.10 v3: 실제 OpenCode Go 테스트 결과 반영. 실패/불안정 모델 제거. Copilot Student ≠ Copilot Pro 정정.
 - 2026.06.10 v2: Copilot 모델 전면 수정. 공식 문서 기준으로 GPT-4o/Llama-405b 등 제거하고 GPT-5.5/Claude Opus 4.8 등 실제 모델로 대체.
 - 2026.06.10 v1: 최초 작성 (오류 포함: Copilot 모델을 GitHub Models로 잘못 기재)
