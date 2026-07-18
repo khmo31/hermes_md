@@ -33,7 +33,7 @@
 |---|------|------------|
 | 3.1 | 분할 조건 6가지가 상호배타적인가 | 중복 조건으로 인한 판단 지연 가능성 |
 | 3.2 | "NEVER 망설이지 말고 즉시 호출"이 실제 실행을 보장하는가 | 판단-실행 간극을 메우는 표현인가 |
-| 3.3 | 모델 라우팅 5그룹의 경계가 모호하지 않은가 | "코드작성" vs "단순 작업" 구분이 명확한가 |
+| 3.3 | 모델 라우팅 그룹(전체 라우팅 테이블은 AGENTS.md §2 참조)의 경계가 모호하지 않은가 | "코드작성" vs "단순 작업" 구분이 명확한가 |
 | 3.4 | model 파라미터 생략 NEVER가 모든 delegate_task 경로를 커버하는가 | batch 모드에서도 per-task model이 강제되는가 |
 | 3.5 | AGENTS.md 섹션 1의 "MUST 준수" 타이틀이 SOUL.md 규칙 #1, #8과 중복 없이 보완하는가 | 두 파일 간 역할 분리가 명확한가 |
 
@@ -93,6 +93,18 @@
 | 8.2 | MEMORY ↔ SOUL.md 간 중복 정리가 완료되었는가 | 이전 세션에서 정리한 중복 항목들이 실제로 제거되었는가 |
 | 8.3 | 파일 크기/복잡도가 컨텍스트 윈도우 내에서 실용적인가 | SOUL.md(6KB) + AGENTS.md(9KB)가 실제 추론 품질에 미치는 영향 |
 | 8.4 | 새로운 규칙 추가 시 확장성이 있는가 | MUST/NEVER 규칙이 20개 이상으로 늘어나도 충돌 없이 동작하는 구조인가 |
+
+---
+
+## 9. 프로필 확장 정합성
+
+| # | 항목 | 확인 포인트 |
+|---|------|------------|
+| 9.1 | 신규 `profiles/*` 추가 시 5파일 구조(AGENTS.md/MEMORY.md/SOUL.md/USER.md/config.yaml) 완비 여부 | `find profiles/<name> -type f | sort` 결과가 writer 프로필과 동일한 파일 구성인지 |
+| 9.2 | config.yaml이 `model.default/provider/base_url/api_mode`, `toolsets`, `terminal.backend/auto_source_bashrc`를 모두 포함하는지 | writer config.yaml을 템플릿으로 diff 비교 |
+| 9.3 | 새 라우팅 그룹 추가 시 `model-inventory.md`에 검증 엔트리 존재 여부 | 라우팅 테이블이 지정하는 모델이 inventory에 실제 존재·테스트 완료 상태인지 |
+| 9.4 | README.md 구조 트리가 실제 파일 트리와 일치하는지 | `find . -type f -not -path './.git/*' | sort` 결과와 README 트리 diff |
+| 9.5 | `evaluation_criteria.md`에 신규 프로필 도메인 평가 항목 포함 여부 | CAD 등 신규 도메인 추가 시 관련 평가 기준 존재하는지 |
 
 ---
 
