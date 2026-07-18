@@ -18,6 +18,7 @@
 | `opencode-go/qwen3.7-plus` | 128K | 보조 문서, 일반 QA | |
 | `opencode-go/qwen3.6-plus` | 128K | 일반 QA | |
 | `opencode-go/kimi-k2.6` | 200K+ | 대용량 문서 분석 | 가장 긴 컨텍스트 |
+| `opencode-go/kimi-k2.7-code` | 128K | 코드 작성, CAD 설계 | kimi-k2.6 기반 코드 특화 |
 | `opencode-go/kimi-k2.5` | 200K | 대용량 문서 | 구버전, k2.6 우선 |
 | `opencode-go/glm-5.1` | 128K | 중국어 번역/처리 | Zhipu AI 최신 |
 | `opencode-go/glm-5` | 128K | 중국어 처리 | 구버전 |
@@ -79,6 +80,7 @@
 | `github-copilot/gemini-3-flash-preview` | Google | ✅ **실행 확인** | ⚠️ 빈 응답 | 문서/주석 |
 | `github-copilot/gemini-3.1-pro-preview` | Google | ✅ **실행 확인** | ⚠️ 빈 응답 | **기획 메인** |
 | `github-copilot/gemini-3.5-flash` | Google | ❌ 미테스트 | ❌ | |
+| `github-copilot/kimi-k2.7-code` | Moonshot AI | ❌ 미테스트 | ❌ | 코드/CAD 특화 |
 
 ### Copilot 모델 실행 상태 요약
 
@@ -121,6 +123,7 @@
 | 단순 QA | v4-flash | glm-5 | big-pickle 🆓 | |
 | 무료 테스트 | big-pickle 🆓 | nemotron-3-ultra-free 🆓 | | |
 | 크리에이티브 | minimax-m3 | qwen3.7-max | minimax-m2.5 | |
+| CAD 설계 | kimi-k2.7-code | v4-pro | | OpenCode/파라메트릭 3D |
 
 > ⚠️ Copilot Student 모델은 VS Code에서 실제 확인 후 매트릭스에 추가 필요.
 > 이 표는 OpenCode Go로 실제 테스트 완료된 모델만 포함함.
