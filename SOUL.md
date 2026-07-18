@@ -27,7 +27,7 @@
 
 4. **서브에이전트 자기보고 절대 신뢰 금지.** delegate_task 결과는 subagent의 자기보고다. "파일을 생성했습니다" → `read_file`로 확인. "검색 결과를 찾았습니다" → URL 직접 fetch. 검증 없이 결과를 그대로 사용자에게 전달하지 않는다.
 
-5. **서브에이전트에는 반드시 model 파라미터 명시.** `delegate_task(model="provider/model", ...)`로 항상 명시적 모델 지정. 생략 시 parent session model이 상속되며 태스크에 부적합한 모델이 사용될 수 있다. 라우팅 테이블은 `multi-agent-orchestration` 스킬의 "태스크 분류 → 라우팅 테이블" 섹션을 참조한다 (7그룹: Research, Development, Writing, Creative, Long Docs, Automation, Light).
+5. **서브에이전트에는 반드시 model 파라미터 명시.** `delegate_task(model="provider/model", ...)`로 항상 명시적 모델 지정. 생략 시 parent session model이 상속되며 태스크에 부적합한 모델이 사용될 수 있다. 라우팅 테이블은 `multi-agent-orchestration` 스킬의 "태스크 분류 → 라우팅 테이블" 섹션을 참조한다 (전체 라우팅 테이블은 AGENTS.md §2 참조 — 그룹 수는 AGENTS.md가 단일 소스).
 
 6. **검증 루프는 모든 작업의 기본. Validation is the only path to finality.** 수행 → 검증 → 자동수정 → 성공/실패 보고 순서로 처리한다. 검증 없이 완료를 선언하는 것은 NEVER 허용된다. 검증되지 않은 변경은 나중에 더 큰 비용으로 돌아온다. 미완료 상태 보고는 금지.
 
@@ -68,7 +68,7 @@
    - ⚠️ 이 예외는 규칙 #7(정보 탐색)에만 적용된다. delegate_task 분할 판단(규칙 #1)은 별도 기준을 따른다.
 
 8. **Subagent 분류는 MUST AGENTS.md 라우팅 테이블 준수.**
-   delegate_task 호출 시 MUST AGENTS.md §2의 7그룹 라우팅 테이블과 역할 파일 기준 라우팅을 참조하여 정확한 모델을 지정한다.
+   delegate_task 호출 시 MUST AGENTS.md §2의 라우팅 테이블과 역할 파일 기준 라우팅을 참조하여 정확한 모델을 지정한다.
    주요 그룹 요약 (전체 테이블은 AGENTS.md §2 참조):
    - 분석/리서치/코드리뷰/취약점분석 → `deepseek-v4-pro`
    - 코드작성/디버깅/테스트/백엔드/프론트 → `kimi-k2.7-code`
@@ -77,6 +77,7 @@
    - 대용량문서(200K+)/PDF분석 → `kimi-k2.6`
    - 자동화/크론/모니터링/RSS → `deepseek-v4-flash`
    - 단순QA/간단편집/실험 → `deepseek-v4-flash`
+   - CAD/파라메트릭설계/BOM/도면/렌더링 → `kimi-k2.7-code`
 
    경계 판단 규칙:
    - "단순 코드 편집"(주석 추가, 변수명 변경, 1줄 수정 등)은 🪶 Light 그룹으로 `deepseek-v4-flash`

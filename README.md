@@ -20,7 +20,7 @@ hermes_md/
 | 파일 | 역할 | 적용 대상 |
 |------|------|----------|
 | `SOUL.md` | Hermes Agent의 정체성, 8개 MUST/NEVER 핵심 규칙, 글쓰기 스타일 | 모든 Hermes 세션 |
-| `AGENTS.md` | delegate_task 분할 기준, 모델 라우팅(7그룹), 검증 루프, 구조적 한계 | 모든 Hermes 세션 |
+| `AGENTS.md` | delegate_task 분할 기준, 모델 라우팅(전체 그룹은 AGENTS.md §2 참조), 검증 루프, 구조적 한계 | 모든 Hermes 세션 |
 | `profiles/meta-optimizer/SOUL.md` | Second Brain Pipeline 개선 전담 에이전트. Hermes 설정 수정 금지 | Meta-Optimizer cron |
 | `profiles/meta-optimizer/AGENTS.md` | 메트릭 분석 워크플로우, Scope 제한, 승인 게이트 | Meta-Optimizer cron |
 

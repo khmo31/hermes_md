@@ -71,7 +71,7 @@ split_trigger=false인 경우에만 직접 처리를 허용하며, true인데 �
 | 📄 Long Docs | 대용량문서(200K+), PDF분석 | `kimi-k2.6` | `kimi-k2.5` | file |
 | 🔄 Automation | 크론, RSS, 뉴스, 모니터링, 알림 | `deepseek-v4-flash` | `big-pickle` 🆓 | web, terminal |
 | 🪶 Light | 단순QA, 간단편집, 실험 | `deepseek-v4-flash` | `big-pickle` 🆓 | terminal, file |
-| 🏗️ CAD Design | CAD설계, 3D모델링, Blender, FreeCAD, 파라메트릭, STL, STEP | `kimi-k2.7-code` | `deepseek-v4-pro` | terminal, file |
+| 🏗️ CAD Design | 파라메트릭 3D 설계, BOM 생성, 2D 도면, 렌더링, STL, STEP | `kimi-k2.7-code` | `deepseek-v4-pro` | terminal, file |
 
 ### 역할 파일 기준 라우팅 (추가 참조)
 
@@ -88,7 +88,7 @@ split_trigger=false인 경우에만 직접 처리를 허용하며, true인데 �
 | 버그, 오류, 디버깅 | `coder.md` | `kimi-k2.7-code` | terminal, file |
 | 테스트, 검증, QA | `coder.md` | `kimi-k2.7-code` | terminal, file |
 | 코드리뷰, PR, 코드검토 | `researcher.md` | `deepseek-v4-pro` | file, web |
-| CAD, Blender, FreeCAD, bpy, 3D, 모델링, 설계도, STL, STEP, 파라메트릭 | `cad-designer.md` | `kimi-k2.7-code` | terminal, file |
+| CAD, Blender, FreeCAD, bpy, 3D, 모델링, 설계, 파라메트릭, BOM, 도면, 렌더링, STL, STEP | `cad-designer.md` | `kimi-k2.7-code` | terminal, file |
 
 ### 부모 모델 권고
 
