@@ -17,6 +17,8 @@ hermes_md/
 │   ├── reviewer/                     # 코드리뷰·보안 감사 전담 (v4-pro)
 │   ├── knowledge/                    # Wiki Pipeline·세션 증류 전담 (v4-pro+flash)
 │   ├── meta-optimizer/               # Pipeline 품질 재귀 개선 전담 (v4-pro)
+│   ├── coder/                        # 코드 구현·디버깅 전담 (kimi-k2.7-code)
+│   ├── researcher/                   # 리서치·분석 전담 (v4-pro)
 │   └── cad/                          # 파라메트릭 3D CAD 설계 전담 (kimi-k2.7-code)
 ├── roles/                            # Subagent 역할 정의 파일
 │   ├── _harness.md                   # 행동 교정·검증 루프 (모든 역할에 공통)

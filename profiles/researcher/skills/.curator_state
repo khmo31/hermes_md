@@ -1,0 +1,9 @@
+{
+  "last_report_path": "/home/khmo31/.hermes/profiles/researcher/logs/curator/20260714-113931",
+  "last_run_at": "2026-07-14T11:39:31.941691+00:00",
+  "last_run_duration_seconds": 0.07982,
+  "last_run_summary": "auto: no changes; llm: skipped (no candidates)",
+  "last_run_summary_shown_at": null,
+  "paused": false,
+  "run_count": 4
+}

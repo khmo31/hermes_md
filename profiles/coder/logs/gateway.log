@@ -1,0 +1,17 @@
+2026-07-02 04:38:03,708 INFO gateway.run: Starting Hermes Gateway...
+2026-07-02 04:38:03,710 INFO gateway.run: Session storage: /home/khmo31/.hermes/profiles/coder/sessions
+2026-07-02 04:38:03,762 INFO gateway.run: Agent budget: max_iterations=90 (agent.max_turns from config.yaml, or HERMES_MAX_ITERATIONS from .env, or default 90)
+2026-07-02 04:38:03,769 INFO gateway.run: Secret redaction: ENABLED (tool output, logs, and chat responses are scrubbed before delivery)
+2026-07-02 04:38:03,777 INFO gateway.run: Active profile: coder
+2026-07-02 04:38:03,826 WARNING gateway.run: No user allowlists configured. All unauthorized users will be denied. Set GATEWAY_ALLOW_ALL_USERS=true in ~/.hermes/.env to allow open access, or configure platform allowlists (e.g., TELEGRAM_ALLOWED_USERS=your_id).
+2026-07-02 04:38:03,848 INFO gateway.run: Previous gateway exited cleanly — skipping session suspension
+2026-07-02 04:38:03,849 WARNING gateway.run: No messaging platforms enabled.
+2026-07-02 04:38:03,858 INFO gateway.run: Gateway will continue running for cron job execution.
+2026-07-02 04:38:03,904 INFO gateway.run: Channel directory built: 0 target(s)
+2026-07-02 04:38:03,918 INFO gateway.run: Press Ctrl+C to stop
+2026-07-02 04:38:04,232 INFO gateway.run: Cron ticker started (interval=60s)
+2026-07-02 04:38:08,955 INFO gateway.run: kanban dispatcher: embedded in gateway (interval=60.0s)
+2026-07-07 11:38:07,551 INFO gateway.run: curator: curator: snapshot created (2026-07-07T11-38-07Z)
+2026-07-07 11:38:07,647 INFO gateway.run: curator: curator: auto: no changes; llm: skipped (no candidates)
+2026-07-14 11:39:31,960 INFO gateway.run: curator: curator: snapshot created (2026-07-14T11-39-31Z)
+2026-07-14 11:39:32,049 INFO gateway.run: curator: curator: auto: no changes; llm: skipped (no candidates)
