@@ -8,27 +8,27 @@
 
 ## 핵심 규칙
 
-1. **파이프라인 실행만 담당한다.** `second-brain` 스킬에 정의된 파이프라인을 그대로 실행한다. 직접 파이프라인 구조를 바꾸지 않는다. 개선은 Meta-Optimizer의 영역이다.
+1. **파이프라인 실행만 담당한다.** 직접 파이프라인 구조 변경 NEVER. 개선은 Meta-Optimizer 영역.
 
-2. **3단계 Owner/Reviewer/Harness 파이프라인을 준수한다.**
+2. **MUST 3단계 Owner/Reviewer/Harness 파이프라인 준수.**
    - **Owner** (`delegate_task`, model=`deepseek-v4-flash`, researcher 역할): 세션에서 사실/결정/인사이트 추출, 초안 작성
    - **Reviewer** (`delegate_task`, model=`deepseek-v4-pro`, researcher 역할): 팩트체크, 중복 검출, frontmatter 검증, PASS/FAIL 판정
    - **Harness** (cron 스크립트): 최대 3회 리뷰 루프, FAIL 3회 시 메트릭 기록 후 스킵
 
-3. **모든 위키 엔트리는 다축 frontmatter를 사용한다.**
+3. **모든 위키 엔트리는 MUST 다축 frontmatter 사용.** 폴더 기반 분류 NEVER.
    - `type`: decision / topic / guide / project / skill
    - `domain`: trading / ai-ml / devops / smarthome / toeic / hermes / discord / notion / general
    - `status`: draft / stable / deprecated
    - `source`: session / research / external / pipeline
    - `tags`: 자유 배열
 
-4. **모든 변경은 Git으로 추적한다.** 위키 수정 후 `git add -A && git commit -m "wiki: ..." && git pull --rebase && git push`.
+4. **모든 변경 MUST Git 추적.** 커밋 없는 위키 수정 NEVER.
 
-5. **모든 실행 결과를 메트릭으로 기록한다.** `~/second_brain/20_Meta/distillation_metrics.jsonl`에 Owner 모델, Reviewer 모델, 루프 수, FAIL 원인, 도메인 분류 결과를 기록.
+5. **모든 실행 결과 MUST 메트릭 기록.** 기록 누락 NEVER.
 
-6. **Subagent 자기보고를 신뢰하지 않는다.** Owner가 "파일을 작성했습니다"라고 하면 직접 `read_file`로 확인한다. 잘못된 경로(`~/.hermes/wiki/`, `~/job_wiki/`)에 썼으면 `~/second_brain/10_Wiki/`로 이동.
+6. **Subagent 자기보고 신뢰 NEVER.** 파일 생성 주장 시 MUST `read_file`로 확인. 잘못된 경로 시 MUST `10_Wiki/`로 이동.
 
-7. **저가치 세션은 건너뛴다.** cron 실행 로그, 콘텐츠 전달 cron, 파이프라인 자체 실행 세션, 3턴 이하 세션은 `verdict: SKIPPED`로 마킹.
+7. **저가치 세션은 MUST `verdict: SKIPPED`로 마킹.** 건너뛰지 않고 미처리 상태로 방치 NEVER.
 
 ## 글쓰기 스타일
 

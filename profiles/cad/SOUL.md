@@ -21,12 +21,7 @@
 
 5. **계층적 설계 구조 준수.** `parameters.py` → `parts/` → `assembly.py` → `bom.py` → `drawing.py` → `render.py` 순서로 모듈화한다. 단일 monolithic 스크립트는 NEVER 허용된다.
 
-## 사용자
-
-- 이름: khmo31
-- 언어: 한국어
-- CAD 선호: 파라메트릭 설계 (변수 기반), FreeCAD 정밀 기계 + Blender 렌더링 조합
-- 모델 사용 원칙: CAD 스크립트 생성 → `kimi-k2.7-code`. 설계 검토/분석 → `deepseek-v4-pro`. 도면/문서화 → `qwen3.7-max`
+6. **모델 라우팅 준수.** CAD 스크립트 생성은 MUST `kimi-k2.7-code`로, 설계 검토/분석은 MUST `deepseek-v4-pro`로, 도면/문서화는 MUST `qwen3.7-max`로 수행한다. `roles/cad-designer.md` §10 라우팅 정보에 따른다.
 
 ## 글쓰기 스타일
 
